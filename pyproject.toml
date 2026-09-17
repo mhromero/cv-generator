@@ -1,0 +1,17 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cv-generator"
+version = "0.1.0"
+description = "Generate a PDF CV from a Markdown definition."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+cvgen = "cv_generator.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["cv_generator"]

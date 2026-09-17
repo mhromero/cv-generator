@@ -1,0 +1,90 @@
+# CV Generator
+
+Generate a PDF CV from a structured Markdown definition. The current renderer targets the `moderncv` LaTeX template and is intentionally small so the Markdown format is easy to understand and extend.
+
+## Requirements
+
+- Python 3.10 or newer
+- [uv](https://docs.astral.sh/uv/)
+- A LaTeX distribution containing `pdflatex` and the `moderncv` package
+
+On macOS, [MacTeX](https://www.tug.org/mactex/) provides the LaTeX tools. On Debian or Ubuntu, install TeX Live and the moderncv package with your distribution’s package manager.
+
+If you use Homebrew on macOS, install the command-line distribution with:
+
+```sh
+brew install --cask mactex-no-gui
+exec zsh -l
+```
+
+Confirm that both the compiler and the required CV class are available:
+
+```sh
+command -v pdflatex
+kpsewhich moderncv.cls
+```
+
+If `pdflatex` is still not found, add MacTeX’s binary directory to the current shell and open a new terminal in future sessions:
+
+```sh
+export PATH="/Library/TeX/texbin:$PATH"
+```
+
+If the full MacTeX download times out, use the smaller BasicTeX distribution instead:
+
+```sh
+brew install --cask basictex
+eval "$(/usr/libexec/path_helper)"
+sudo tlmgr update --self
+sudo tlmgr install moderncv
+```
+
+Then verify the required tools:
+
+```sh
+command -v pdflatex
+kpsewhich moderncv.cls
+```
+
+## Install
+
+From the project directory:
+
+```sh
+uv sync
+```
+
+The project has no runtime Python dependencies; `uv` manages the project environment and exposes the `cvgen` command.
+
+## Usage
+
+Generate a PDF from the included template:
+
+```sh
+uv run cvgen TEMPLATE.md \
+  --output /tmp/cv.generated.pdf \
+  --tex-output /tmp/cv.generated.tex
+```
+
+The input path determines the default PDF path when `--output` is omitted. Use `--no-pdf` when you only need the intermediate LaTeX. To verify that generated LaTeX is identical to a reference template:
+
+```sh
+uv run cvgen TEMPLATE.md \
+  --no-pdf \
+  --tex-output /tmp/cv.generated.tex \
+  --compare-to /path/to/reference.tex
+```
+
+The saved intermediate LaTeX remains identical to the renderer's template. During PDF compilation, `cvgen` adds a temporary compatibility layer for newer `moderncv` releases so the name, title, section headings, and section rules retain the purple styling.
+
+The Markdown format is demonstrated in [TEMPLATE.md](TEMPLATE.md). It contains a name, title, contact bullets, and the `Profile`, `Experience`, `Projects`, `Education`, `Technical Skills`, and `Awards` sections. Keep completed personal CV files in the ignored `example/` directory or outside the repository.
+
+## Tests
+
+Run the standard-library test suite with:
+
+```sh
+uv run python -m unittest discover -s tests -v
+```
+
+The tests parse `TEMPLATE.md` and verify the supported CV structure and compatibility layer.
