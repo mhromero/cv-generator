@@ -2,7 +2,7 @@
 
 Generate a PDF CV from a structured Markdown definition. The current renderer targets the `moderncv` LaTeX template and is intentionally small so the Markdown format is easy to understand and extend.
 
-Connect with me on [LinkedIn](https://www.linkedin.com/in/maria-romero-huertas-39834a34b/).
+Connect with me on [LinkedIn](www.linkedin.com/in/maría-romero-huertas-39834a34b).
 
 ## Example output
 
